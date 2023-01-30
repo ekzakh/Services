@@ -1,5 +1,6 @@
 package com.ekzak.services
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -12,6 +13,11 @@ class SimpleNotification(private val context: Context) {
     private var id = 0
 
     fun show(title: String, text: String) {
+        val notification = createNotification(title, text)
+        notificationManager.notify(id++, notification)
+    }
+
+    private fun createChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
                 CHANNEL_ID,
@@ -20,13 +26,15 @@ class SimpleNotification(private val context: Context) {
             )
             notificationManager.createNotificationChannel(notificationChannel)
         }
+    }
 
-        val notification = NotificationCompat.Builder(context, CHANNEL_ID)
+    fun createNotification(title: String, text: String): Notification {
+        createChannel()
+        return NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle(title)
             .setContentText(text)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .build()
-        notificationManager.notify(id++, notification)
     }
 
     companion object {

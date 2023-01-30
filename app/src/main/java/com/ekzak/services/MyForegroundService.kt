@@ -11,25 +11,29 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MyService : Service() {
+class MyForegroundService : Service() {
 
     private val scope = CoroutineScope(Dispatchers.Main)
 
     override fun onCreate() {
         super.onCreate()
         log("onCreate")
+
+        val myNotification =
+            SimpleNotification(this).createNotification("Foreground notification", "Service is working")
+        startForeground(NORIFICATION_ID, myNotification)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         log("onStartCommand")
-        val start = intent?.getIntExtra(EXTRA, 0) ?: 0
         scope.launch {
-            for (i in start until 20) {
+            for (i in 0 until 10) {
                 delay(1000)
                 log("Timer: $i")
             }
+            stopSelf()
         }
-        return START_STICKY
+        return START_NOT_STICKY
     }
 
     override fun onDestroy() {
@@ -43,15 +47,16 @@ class MyService : Service() {
     }
 
     private fun log(msg: String) {
-        Log.d("SERVICE_TAG", "MyService $msg")
+        Log.d("SERVICE_TAG", "MyForegroundService $msg")
     }
 
     companion object {
-        private const val EXTRA = "extra"
+        private const val NORIFICATION_ID = 1
+        private const val CHANNEL_ID = "channel_id"
+        private const val CHANNEL_NAME = "channel_name"
+
         fun newIntent(context: Context): Intent {
-            return Intent(context, MyService::class.java).apply {
-                putExtra(EXTRA, 30)
-            }
+            return Intent(context, MyForegroundService::class.java)
         }
     }
 }

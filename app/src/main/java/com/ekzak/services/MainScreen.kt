@@ -1,6 +1,7 @@
 package com.ekzak.services
 
 import android.content.Context
+import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +17,6 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun MainScreen(
     context: Context,
-    notification: SimpleNotification,
 ) {
     Column(
         modifier = Modifier
@@ -27,14 +27,23 @@ fun MainScreen(
     ) {
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { context.startService(MyService.newIntent(context)) }
+            onClick = {
+//                context.stopService(MyForegroundService.newIntent(context))
+                context.startService(MyService.newIntent(context))
+            }
         ) {
             Text(text = "Service")
         }
 
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { notification.show("Title", "Some text") }
+            onClick = {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.startForegroundService(MyForegroundService.newIntent(context))
+                } else {
+                    context.startService(MyForegroundService.newIntent(context))
+                }
+            }
         ) {
             Text(text = "Foreground Service")
         }
