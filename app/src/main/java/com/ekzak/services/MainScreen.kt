@@ -14,7 +14,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun MainScreen(context: Context) {
+fun MainScreen(
+    context: Context,
+    notification: SimpleNotification,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -31,7 +34,7 @@ fun MainScreen(context: Context) {
 
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /*TODO*/ }
+            onClick = { notification.show("Title", "Some text") }
         ) {
             Text(text = "Foreground Service")
         }
