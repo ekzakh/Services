@@ -1,5 +1,6 @@
 package com.ekzak.services
 
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun MainScreen() {
+fun MainScreen(context: Context) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -23,33 +24,39 @@ fun MainScreen() {
     ) {
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /*TODO*/ }) {
+            onClick = { context.startService(MyService.newIntent(context)) }
+        ) {
             Text(text = "Service")
         }
 
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /*TODO*/ }) {
+            onClick = { /*TODO*/ }
+        ) {
             Text(text = "Foreground Service")
         }
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /*TODO*/ }) {
+            onClick = { /*TODO*/ }
+        ) {
             Text(text = "Intent Service")
         }
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /*TODO*/ }) {
+            onClick = { /*TODO*/ }
+        ) {
             Text(text = "Job Intent Service")
         }
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /*TODO*/ }) {
+            onClick = { /*TODO*/ }
+        ) {
             Text(text = "Alarm Manager")
         }
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /*TODO*/ }) {
+            onClick = { /*TODO*/ }
+        ) {
             Text(text = "Work Manager")
         }
     }
