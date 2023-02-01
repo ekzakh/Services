@@ -24,7 +24,7 @@ class MyService : Service() {
         log("onStartCommand")
         val start = intent?.getIntExtra(EXTRA, 0) ?: 0
         scope.launch {
-            for (i in start until 100) {
+            for (i in start until start + 20) {
                 delay(1000)
                 log("Timer: $i")
             }
