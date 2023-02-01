@@ -1,5 +1,9 @@
 package com.ekzak.services
 
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
+import android.app.job.JobWorkItem
+import android.content.ComponentName
 import android.content.Context
 import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +22,8 @@ import androidx.compose.ui.unit.dp
 fun MainScreen(
     context: Context,
 ) {
+    var page = 0
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -52,6 +58,24 @@ fun MainScreen(
             onClick = { context.startService(MyIntentService.newIntent(context)) }
         ) {
             Text(text = "Intent Service")
+        }
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {
+                val componentName = ComponentName(context, MyJobService::class.java)
+
+                val jobInfo = JobInfo.Builder(MyJobService.JOB_ID, componentName)
+                    .setRequiresCharging(false)
+                    .setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED)
+                    .build()
+
+                val scheduler = context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    scheduler.enqueue(jobInfo, JobWorkItem(MyJobService.newIntent(page++)))
+                }
+            }
+        ) {
+            Text(text = "Job Scheduler")
         }
         Button(
             modifier = Modifier.fillMaxWidth(),
