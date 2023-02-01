@@ -49,7 +49,7 @@ fun MainScreen(
         }
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /*TODO*/ }
+            onClick = { context.startService(MyIntentService.newIntent(context)) }
         ) {
             Text(text = "Intent Service")
         }
