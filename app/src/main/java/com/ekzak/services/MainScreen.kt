@@ -79,7 +79,7 @@ fun MainScreen(
         }
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /*TODO*/ }
+            onClick = { MyJobIntentService.enqueue(context, page++)}
         ) {
             Text(text = "Job Intent Service")
         }
