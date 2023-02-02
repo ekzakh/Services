@@ -17,6 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.work.ExistingWorkPolicy
+import androidx.work.WorkManager
 
 @Composable
 fun MainScreen(
@@ -79,7 +81,7 @@ fun MainScreen(
         }
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { MyJobIntentService.enqueue(context, page++)}
+            onClick = { MyJobIntentService.enqueue(context, page++) }
         ) {
             Text(text = "Job Intent Service")
         }
@@ -91,7 +93,14 @@ fun MainScreen(
         }
         Button(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { /*TODO*/ }
+            onClick = {
+                val workManager = WorkManager.getInstance(context.applicationContext)
+                workManager.enqueueUniqueWork(
+                    MyWorker.WORK_NAME,
+                    ExistingWorkPolicy.APPEND,
+                    MyWorker.makeRequest(page++)
+                )
+            }
         ) {
             Text(text = "Work Manager")
         }
